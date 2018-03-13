@@ -35,7 +35,7 @@ clone this repo and cd in then provision instance with:
 ```
 (follow steps above to get server, miners, and frontend running)
 
-a handle ssh command to get a bunch of miners going:
+a handy ssh command to get a bunch of miners going:
 ```
 ssh ubuntuinstance "cd vanity-blockie-miner;npm run miner"
 ```
