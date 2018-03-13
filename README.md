@@ -1,7 +1,7 @@
 Vanity Blockie Miner
 ----------------------------
 
-Brute force account creation and blockie compare to some target image.
+Brute force account creation and pixel color compare to some target image.
 
 Install:
 ```
@@ -13,12 +13,12 @@ cd ..
 
 Start Backend Server:
 ```
-npm server
+npm run server
 ```
 
 Start Miner (You will want to run multiple instances of this):
 ```
-npm miner
+npm run miner
 ```
 
 Start Frontend

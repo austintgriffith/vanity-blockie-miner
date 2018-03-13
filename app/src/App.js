@@ -19,6 +19,9 @@ class App extends Component {
       mining: false,
       accept: '',
       files: [],
+      priv: "",
+      pub: "",
+      diff: "",
       dropzoneActive: false
     };
   }
@@ -35,7 +38,7 @@ class App extends Component {
     });
   }
   handleMiningChange(value) {
-    this.setState({target:value})
+    this.setState({target:value,results:"",priv:"",pub:"",diff:""})
     axios.post(backend+'/target', {
       target:value,
     })
@@ -75,6 +78,12 @@ class App extends Component {
           'Content-Type': 'multipart/form-data'
         }
     })
+    .then(function (response) {
+       console.log(response);
+     })
+     .catch(function (error) {
+       console.log(error);
+     });
   }
 
   applyMimeTypes(event) {
@@ -82,9 +91,18 @@ class App extends Component {
       accept: event.target.value
     });
   }
+  blockieClick(priv,pub,diff){
+    this.setState({priv:priv,pub:pub,diff:diff})
+  }
   render() {
     if(!this.state){
-      return (<div>loading...</div>)
+      return (
+        <div className="App">
+          <div style={{padding:50}}>
+            <span style={{opacity:0.5}}>Loading...</span>
+          </div>
+        </div>
+      )
     }
     let miningOptions
     if(this.state.images){
@@ -93,6 +111,14 @@ class App extends Component {
           <Option value={image} key={image}>{image}</Option>
         )
       })
+    }else{
+      return (
+        <div className="App">
+          <div style={{padding:50}}>
+            <span style={{opacity:0.5}}>Connecting...</span>
+          </div>
+        </div>
+      )
     }
     let count = 0
     let results = ""
@@ -100,33 +126,40 @@ class App extends Component {
       results = this.state.results.map(result => {
         if(result&&result.pub){
           return(
-              <div key={"blockie"+count++} onContextMenu={this.contextMenu.bind(this,result.priv)}>
-                <a target="_blank" href={"http://etherscan.io/address/"+result.pub}>
+              <div key={"blockie"+count++} style={{cursor:"pointer"}} onContextMenu={this.contextMenu.bind(this,result.priv)}
+                onClick={this.blockieClick.bind(this,result.priv,result.pub,result.diff)}
+              >
+
                   <Blockies
                     seed={result.pub}
                     scale={10}
                   />
-                </a>
+
               </div>
           )
         }
 
       })
     }
-    let result = (
-      <StackGrid
-        columnWidth={90}
-      >
-        {results}
-      </StackGrid>
-    )
-
+    let result = "Select an image or drag and drop to start mining."
     let targetImage
     if(this.state.target!="none"){
       targetImage=(
         <img src={backend+"/"+this.state.target} style={{zIndex:-1,marginLeft:80,transform:'scale(10)'}}/>
       )
+
+      result = (
+        <StackGrid
+          columnWidth={88}
+        >
+          {results}
+        </StackGrid>
+      )
     }
+
+
+
+
 
 
     const { accept, files, dropzoneActive } = this.state;
@@ -142,10 +175,21 @@ class App extends Component {
       color: '#fff'
     };
 
+    let bottomBar = ""
+    if(this.state.priv){
+      bottomBar = (
+        <div style={{position:'fixed',bottom:0,width:"100%",textAlign:"center",zIndex:99,padding:50,border:"1px solid #dddddd",backgroundColor:"#ffffff"}}>
+          {this.state.priv} {this.state.pub} {this.state.diff} <span style={{cursor:"pointer"}} onClick={()=>{
+             this.setState({priv:"",pub:"",diff:""})
+           }}>[X]</span>
+        </div>
+      )
+    }
+
     return (
         <Dropzone
          disableClick
-         style={{position: "relative"}}
+         style={{position: "relative",backgroundColor:"#eeeeee"}}
          accept={accept}
          onDrop={this.onDrop.bind(this)}
          onDragEnter={this.onDragEnter.bind(this)}
@@ -167,6 +211,7 @@ class App extends Component {
                   {targetImage}
                   <div style={{margin:50,padding:50}}>{result}</div>
                 </div>
+                {bottomBar}
               </div>
       </Dropzone>
     );

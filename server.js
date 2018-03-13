@@ -3,6 +3,16 @@ const fs = require('fs')
 const app = express()
 const sharp = require('sharp');
 
+if (!fs.existsSync("images")){
+    fs.mkdirSync("images");
+}
+if (!fs.existsSync("results")){
+    fs.mkdirSync("results");
+}
+if (!fs.existsSync("uploads")){
+    fs.mkdirSync("uploads");
+}
+
 var busboy = require('connect-busboy');
 var bodyParser = require('body-parser')
 app.use(busboy());
@@ -20,7 +30,9 @@ app.get('/', (req, res) => {
   let obj = {}
   obj.images = []
   fs.readdirSync("images").forEach(file => {
-    obj.images.push(file)
+    if(file.indexOf(".")!=0){
+      obj.images.push(file)
+    }
   })
   obj.target = fs.readFileSync("./target.txt").toString().trim()
   try{
@@ -43,14 +55,31 @@ app.route('/upload')
             console.log("Uploading: " + filename);
 
             //Path where image will be uploaded
-            fstream = fs.createWriteStream(__dirname + '/images/' + filename);
+            fstream = fs.createWriteStream(__dirname + '/uploads/' + filename);
             file.pipe(fstream);
             fstream.on('close', function () {
               console.log("Upload Finished of " + filename);
 
-              sharp(__dirname + '/images/' + filename)
-                .resize(8,8)
-                .toFile(__dirname + '/images/' + filename, (err, info) => console.log("DONE?",info) );
+              sharp(__dirname + '/uploads/' + filename)
+                /*.resize(8,8,{
+                  kernel: sharp.kernel.nearest
+                })*/
+                .resize(32,32,{
+                  kernel: sharp.kernel.cubic
+                }).sharpen(1,1,8).resize(8,8,{
+                    kernel: sharp.kernel.cubic
+                  }).sharpen(1,1,16)
+                /*.resize(8,8,{
+                  kernel: sharp.kernel.lanczos2
+                })*/
+                /*.resize(8,8,{
+                  kernel: sharp.kernel.lanczos3
+                })*/
+                .toFile(__dirname + '/images/' + filename, (err, info) => {
+                  console.log("DONE?",info)
+                  fs.writeFileSync("target.txt",filename)
+                  res.send(filename)
+                });
 
 
             });

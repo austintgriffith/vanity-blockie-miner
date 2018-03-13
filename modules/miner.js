@@ -19,8 +19,10 @@ module.exports = function mine(targetFile,iterations){
         for(let i =0;i<pixels.data.length-2;i+=4){
           target.push([pixels.data[i],pixels.data[i+1],pixels.data[i+2],pixels.data[i+3]])
         }
-        var newPriv = "0x"+makePriv()
+        //0xb3956b726cf38f6b7878a2d83917a0c33a7d2c39257503691a02a8315c1b88bc 0xf5419561cbae4f499bc25e3f65030974f958af29 7188 [X]
+        var newPriv = makePriv()
         let newAddress = "0x"+addressFromPriv(newPriv)
+        newPriv = "0x"+newPriv
         let blockieArray = createIcon({seed:newAddress})
         if(blockieArray.length!=target.length){
           console.log("ERROR, images are not the same size")
@@ -29,13 +31,14 @@ module.exports = function mine(targetFile,iterations){
         let lineSize = Math.sqrt(target.length);
         let bestDiff = 9999999999999
         let bestPriv = ""
-        let bestDiff3 = 9999999999999
-        let bestPriv3 = ""
         let bestDiff2 = 9999999999999
         let bestPriv2 = ""
+        let bestDiff3 = 9999999999999
+        let bestPriv3 = ""
         while(iterations-- > 0){
-          newPriv = "0x"+makePriv()
+          newPriv = makePriv()
           newAddress = "0x"+addressFromPriv(newPriv)
+          newPriv = newPriv
           blockieArray = createIcon({seed:newAddress})
           let globalDiff = 0
           let linecount = 0
@@ -47,9 +50,15 @@ module.exports = function mine(targetFile,iterations){
           //  globalDiff +=  Math.abs(blockieArray[i+4].r-target[i+4][0]) + Math.abs(blockieArray[i+4].g-target[i+4][1]) + Math.abs(blockieArray[i+4].b-target[i+4][2])
           }
           if(globalDiff<bestDiff){
+            bestDiff3=bestDiff2
+            bestPriv3=bestPriv2
+            bestDiff2=bestDiff
+            bestPriv2=bestPriv
             bestDiff=globalDiff
             bestPriv=newPriv
           }else if(globalDiff<bestDiff2){
+            bestDiff3=bestDiff2
+            bestPriv3=bestPriv2
             bestDiff2=globalDiff
             bestPriv2=newPriv
           }else if(globalDiff<bestDiff3){
@@ -58,15 +67,15 @@ module.exports = function mine(targetFile,iterations){
           }
         }
         let thisObject = [
-          {priv:bestPriv,pub:"0x"+addressFromPriv(bestPriv),diff:bestDiff},
-          {priv:bestPriv2,pub:"0x"+addressFromPriv(bestPriv2),diff:bestDiff2},
-          {priv:bestPriv2,pub:"0x"+addressFromPriv(bestPriv2),diff:bestDiff2},
+          {priv:"0x"+bestPriv,pub:"0x"+addressFromPriv(bestPriv),diff:bestDiff},
+          {priv:"0x"+bestPriv2,pub:"0x"+addressFromPriv(bestPriv2),diff:bestDiff2},
+          {priv:"0x"+bestPriv3,pub:"0x"+addressFromPriv(bestPriv3),diff:bestDiff3},
         ]
         let bestObject = {}
         try {
           bestObject = JSON.parse(fs.readFileSync("results/"+targetFile+".mined"))
         }catch(e){}
-        console.log(bestObject)
+
         if(bestObject.length>0){
           console.log("EXISTS")
           Array.prototype.push.apply(bestObject,thisObject);
@@ -76,9 +85,10 @@ module.exports = function mine(targetFile,iterations){
         }
          bestObject.sort(compare);
          let finalArray = []
-        for(let l = 0;l<25;l++){
+        for(let l = 0;l<100;l++){
           finalArray.push(bestObject[l])
         }
+        console.log(finalArray)
         fs.writeFileSync("results/"+targetFile+".mined",JSON.stringify(finalArray))
         let duration = Date.now()-start
         console.log("Duration ",duration)
