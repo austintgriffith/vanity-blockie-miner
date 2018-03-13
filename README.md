@@ -26,3 +26,16 @@ Start Frontend
 cd app
 npm start
 ```
+
+#AWS Ubuntu
+
+clone this repo and cd in then provision instance with:
+```
+./provisionUbuntu.sh
+```
+(follow steps above to get server, miners, and frontend running)
+
+a handle ssh command to get a bunch of miners going:
+```
+ssh ubuntuinstance "cd vanity-blockie-miner;npm run miner"
+```
