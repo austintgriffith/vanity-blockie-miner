@@ -1,7 +1,11 @@
 Vanity Blockie Miner
 ----------------------------
 
-based on https://github.com/ethereum/blockies from @avsa
+# Demo
+
+![largemachine](https://s3.amazonaws.com/atgpub/largemachine.png)
+
+![demogif](https://s3.amazonaws.com/atgpub/blockminersmall.gif)
 
 # Purpose
 
@@ -53,12 +57,5 @@ a handy ssh command to get a bunch of miners going:
 ssh ubuntuinstance "cd vanity-blockie-miner;npm run miner"
 ```
 
-# Demo
-
-I spun up a C4.8XLarge on AWS:
-
-![largemachine](https://s3.amazonaws.com/atgpub/largemachine.png)
-
-
-![demogif](https://s3.amazonaws.com/atgpub/blockminersmall.gif)
+based on https://github.com/ethereum/blockies from @avsa
 
