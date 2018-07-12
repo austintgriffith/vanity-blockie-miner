@@ -43,7 +43,9 @@ ssh ubuntuinstance "cd vanity-blockie-miner;npm run miner"
 # Demo
 
 I spun up a C4.8XLarge on AWS:
+
 ![largemachine](https://s3.amazonaws.com/atgpub/largemachine.png)
 
-![demo](https://s3.amazonaws.com/atgpub/blockieminer.gif)
+
+![demogif](https://s3.amazonaws.com/atgpub/blockieminer.gif)
 
