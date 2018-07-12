@@ -3,7 +3,7 @@ Vanity Blockie Miner
 
 Brute force account creation and pixel color compare to some target image.
 
-Install:
+# Install
 ```
 npm install
 cd app
@@ -27,7 +27,7 @@ cd app
 npm start
 ```
 
-#AWS Ubuntu
+# AWS Ubuntu
 
 clone this repo and cd in then provision instance with:
 ```
@@ -39,3 +39,11 @@ a handy ssh command to get a bunch of miners going:
 ```
 ssh ubuntuinstance "cd vanity-blockie-miner;npm run miner"
 ```
+
+# Demo
+
+I spun up a C4.8XLarge on AWS:
+![largemachine](https://s3.amazonaws.com/atgpub/largemachine.png)
+
+![demo](https://s3.amazonaws.com/atgpub/blockieminer.gif)
+
