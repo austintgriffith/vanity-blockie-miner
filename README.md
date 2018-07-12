@@ -11,7 +11,7 @@ Vanity Blockie Miner
 
 When I was working on EthAvatar (https://github.com/ethereum/EIPs/issues/928) I was worried about an attacker replicating an Ethereum identicon (Blockie). I wanted to test how easy it would be to brute force replicate a similar enough blockie you could use it to phish an account. My conclusion was you could get close, but it really isn't worth it.
 
-Blockies are also very important in my game Galleass.io. Each ship has a Blockie flag that represents the account countrolling it. I would love to find an account that looks like a "jolly roger". Here is the Boba Fett helmet I mined controlling a ship in Galleass:
+Blockies are also very important in my game [Galleass](https://galleass.io). Each ship has a Blockie flag that represents the account countrolling it. I would love to find an account that looks like a "jolly roger". Here is the Boba Fett helmet I mined controlling a ship in [Galleass](https://galleass.io):
 
 ![bobaidenticon](https://user-images.githubusercontent.com/2653167/42663562-3d12c1d6-85f3-11e8-915a-c106c1c8e07f.png)
 
