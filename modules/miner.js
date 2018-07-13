@@ -43,11 +43,18 @@ module.exports = function mine(targetFile,iterations){
           let globalDiff = 0
           let linecount = 0
           for(let i=0;i<target.length;i+=lineSize){
-            globalDiff +=  Math.abs(blockieArray[i].r-target[i][0]) + Math.abs(blockieArray[i].g-target[i][1]) + Math.abs(blockieArray[i].b-target[i][2])
-            globalDiff +=  Math.abs(blockieArray[i+1].r-target[i+1][0]) + Math.abs(blockieArray[i+1].g-target[i+1][1]) + Math.abs(blockieArray[i+1].b-target[i+1][2])
-            globalDiff +=  Math.abs(blockieArray[i+2].r-target[i+2][0]) + Math.abs(blockieArray[i+2].g-target[i+2][1]) + Math.abs(blockieArray[i+2].b-target[i+2][2])
-            globalDiff +=  Math.abs(blockieArray[i+3].r-target[i+3][0]) + Math.abs(blockieArray[i+3].g-target[i+3][1]) + Math.abs(blockieArray[i+3].b-target[i+3][2])
-          //  globalDiff +=  Math.abs(blockieArray[i+4].r-target[i+4][0]) + Math.abs(blockieArray[i+4].g-target[i+4][1]) + Math.abs(blockieArray[i+4].b-target[i+4][2])
+
+            globalDiff +=  Math.pow(blockieArray[i].r-target[i][0], 2) + Math.pow(blockieArray[i].g-target[i][1], 2) + Math.pow(blockieArray[i].b-target[i][2], 2)
+            globalDiff +=  Math.pow(blockieArray[i+1].r-target[i+1][0], 2) + Math.pow(blockieArray[i+1].g-target[i+1][1], 2) + Math.pow(blockieArray[i+1].b-target[i+1][2], 2)
+            globalDiff +=  Math.pow(blockieArray[i+2].r-target[i+2][0], 2) + Math.pow(blockieArray[i+2].g-target[i+2][1], 2) + Math.pow(blockieArray[i+2].b-target[i+2][2], 2)
+            globalDiff +=  Math.pow(blockieArray[i+3].r-target[i+3][0], 2) + Math.pow(blockieArray[i+3].g-target[i+3][1], 2) + Math.pow(blockieArray[i+3].b-target[i+3][2], 2)
+          //  globalDiff +=  Math.abs(blockieArray[i+4].r-target[i+4][0], 2) + Math.abs(blockieArray[i+4].g-target[i+4][1], 2) + Math.abs(blockieArray[i+4].b-target[i+4][2], 2)
+
+            // RGB distances within pixel
+            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i]) - rgbTargetDistance(target[i]), 2);
+            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+1]) - rgbTargetDistance(target[i+1]), 2);
+            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+2]) - rgbTargetDistance(target[i+2]), 2);
+            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+3]) - rgbTargetDistance(target[i+3]), 2) ;
           }
           if(globalDiff<bestDiff){
             bestDiff3=bestDiff2
@@ -97,6 +104,19 @@ module.exports = function mine(targetFile,iterations){
     }catch(e){console.log(e);resolve()}
   })
 }
+
+// Distance between color within a pixel (greyishness) for target color
+function rgbTargetDistance(target) {
+  let dist = Math.pow(target[0] - target[1], 2) + Math.pow(target[0] - target[2], 2) + Math.pow(target[1] - target[2], 2); 
+  return dist;
+}
+
+// Distance between color within a pixel (greyishness) for blockies
+function rgbBlockieDistance(blockie) {
+  let dist = Math.pow(blockie.r - blockie.g, 2) + Math.pow(blockie.r - blockie.b, 2) + Math.pow(blockie.g - blockie.b, 2); 
+  return dist;
+}
+
 
 function compare(a,b) {
   if(!b||!b.diff) return -1
