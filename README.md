@@ -21,8 +21,8 @@ Start Miner (You will want to run multiple instances of this):
 npm run miner
 ```
 
-Start Frontend
+Start Frontend (port 80 might not be the best idea)
 ```
 cd app
-npm start
+sudo npm start
 ```

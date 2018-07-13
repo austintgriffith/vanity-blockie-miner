@@ -9,7 +9,7 @@ import '../node_modules/antd/dist/antd.css';
 
 const Option = Select.Option;
 
-const backend = "http://localhost:48725"
+const backend = ":8000"
 
 let loadInterval
 class App extends Component {
@@ -32,14 +32,14 @@ class App extends Component {
     clearInterval(loadInterval)
   }
   load(){
-    axios.get(backend)
+    axios.get("http://"+window.location.hostname+backend)
     .then(res => {
       this.setState(res.data)
     });
   }
   handleMiningChange(value) {
     this.setState({target:value,results:"",priv:"",pub:"",diff:""})
-    axios.post(backend+'/target', {
+    axios.post("http://"+window.location.hostname+backend+'/target', {
       target:value,
     })
     .then(function (response) {
@@ -73,7 +73,7 @@ class App extends Component {
     });
     var formData = new FormData();
     formData.append("image", files[0]);
-    axios.post(backend+'/upload', formData, {
+    axios.post("http://"+window.location.hostname+backend+'/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -145,7 +145,7 @@ class App extends Component {
     let targetImage
     if(this.state.target!="none"){
       targetImage=(
-        <img src={backend+"/"+this.state.target} style={{zIndex:-1,marginLeft:80,transform:'scale(10)'}}/>
+        <img src={"http://"+window.location.hostname+backend+"/"+this.state.target} style={{zIndex:-1,marginLeft:80,transform:'scale(10)'}}/>
       )
 
       result = (

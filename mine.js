@@ -1,8 +1,8 @@
 var fs = require("fs")
 let mine;
-const iterations = 300
+const iterations = 10000
 let doMine = async function(){
-  //while(true){
+  while(true){
     delete require.cache[require.resolve('./modules/miner.js')]
     mine = require("./modules/miner.js")
     let targetFile = fs.readFileSync("target.txt").toString().trim();
@@ -13,7 +13,7 @@ let doMine = async function(){
       console.log("Mining Image",targetFile)
       await mine(targetFile,iterations)
     }
-  //}
+  }
 }
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

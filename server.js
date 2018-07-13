@@ -64,11 +64,11 @@ app.route('/upload')
                 /*.resize(8,8,{
                   kernel: sharp.kernel.nearest
                 })*/
-                .resize(32,32,{
-                  kernel: sharp.kernel.cubic
-                }).sharpen(1,1,8).resize(8,8,{
+                .sharpen().resize(16,16,{
                     kernel: sharp.kernel.cubic
-                  }).sharpen(1,1,16)
+                }).sharpen().resize(8,8,{
+                    kernel: sharp.kernel.cubic
+                }).sharpen()
                 /*.resize(8,8,{
                   kernel: sharp.kernel.lanczos2
                 })*/
@@ -86,4 +86,4 @@ app.route('/upload')
         });
     });
 
-app.listen(48725, () => console.log('Backend listening on 48725!'))
+app.listen(8000, () => console.log('Backend listening on 8000!'))
