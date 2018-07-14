@@ -51,10 +51,10 @@ module.exports = function mine(targetFile,iterations){
           //  globalDiff +=  Math.abs(blockieArray[i+4].r-target[i+4][0], 2) + Math.abs(blockieArray[i+4].g-target[i+4][1], 2) + Math.abs(blockieArray[i+4].b-target[i+4][2], 2)
 
             // RGB distances within pixel
-            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i]) - rgbTargetDistance(target[i]), 2);
-            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+1]) - rgbTargetDistance(target[i+1]), 2);
-            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+2]) - rgbTargetDistance(target[i+2]), 2);
-            globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+3]) - rgbTargetDistance(target[i+3]), 2) ;
+            // globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i]) - rgbTargetDistance(target[i]), 2);
+            // globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+1]) - rgbTargetDistance(target[i+1]), 2);
+            // globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+2]) - rgbTargetDistance(target[i+2]), 2);
+            // globalDiff += Math.pow(rgbBlockieDistance(blockieArray[i+3]) - rgbTargetDistance(target[i+3]), 2) ;
           }
           if(globalDiff<bestDiff){
             bestDiff3=bestDiff2
@@ -107,13 +107,13 @@ module.exports = function mine(targetFile,iterations){
 
 // Distance between color within a pixel (greyishness) for target color
 function rgbTargetDistance(target) {
-  let dist = Math.pow(target[0] - target[1], 2) + Math.pow(target[0] - target[2], 2) + Math.pow(target[1] - target[2], 2); 
+  let dist = Math.pow(target[0] - target[1], 2) + Math.pow(target[0] - target[2], 2) + Math.pow(target[1] - target[2], 2);
   return dist;
 }
 
 // Distance between color within a pixel (greyishness) for blockies
 function rgbBlockieDistance(blockie) {
-  let dist = Math.pow(blockie.r - blockie.g, 2) + Math.pow(blockie.r - blockie.b, 2) + Math.pow(blockie.g - blockie.b, 2); 
+  let dist = Math.pow(blockie.r - blockie.g, 2) + Math.pow(blockie.r - blockie.b, 2) + Math.pow(blockie.g - blockie.b, 2);
   return dist;
 }
 
